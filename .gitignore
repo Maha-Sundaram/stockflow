@@ -1,0 +1,73 @@
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+############################
+# Build folders
+############################
+build/
+out/
+
+############################
+# Logs
+############################
+*.log
+logs/
+
+############################
+# OS files
+############################
+.DS_Store
+Thumbs.db
+
+############################
+# IDE - STS / Eclipse
+############################
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+############################
+# IntelliJ
+############################
+.idea/
+*.iws
+*.iml
+*.ipr
+
+############################
+# VS Code
+############################
+.vscode/
+
+############################
+# Maven Wrapper
+############################
+.mvn/wrapper/maven-wrapper.jar
+
+############################
+# Environment / Secrets
+############################
+.env
+.env.*
+application-local.properties
+application-dev.properties
+application-prod.properties
+application.properties
+
+############################
+# Database files (if using H2 local)
+############################
+*.mv.db
+*.trace.db
+
+############################
+# Docker
+############################
+docker-compose.override.yml
