@@ -1,6 +1,7 @@
 package com.stockflow.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,5 +15,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long>{
 			WHERE i.quantity < i.reorderLevel
 			""")
 	List<Inventory> findLowStockProducts();
+	
+	Optional<Inventory> findByProductId(Long productId);
 	
 }
