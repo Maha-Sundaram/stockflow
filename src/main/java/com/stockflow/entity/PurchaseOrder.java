@@ -1,6 +1,7 @@
 package com.stockflow.entity;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -26,16 +27,19 @@ public class PurchaseOrder extends BaseEntity{
 	@OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
 	private List<PurchaseOrderItem> items;
 	
+	private LocalDate orderDate;
+	
 	public PurchaseOrder() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public PurchaseOrder(Vendor vendor, String status, BigDecimal totalAmount, List<PurchaseOrderItem> items) {
+	public PurchaseOrder(Vendor vendor, String status, BigDecimal totalAmount, List<PurchaseOrderItem> items, LocalDate orderDate) {
 		super();
 		this.vendor = vendor;
 		this.status = status;
 		this.totalAmount = totalAmount;
 		this.items = items;
+		this.orderDate = orderDate;
 	}
 
 	public Vendor getVendor() {
@@ -68,6 +72,14 @@ public class PurchaseOrder extends BaseEntity{
 
 	public void setItems(List<PurchaseOrderItem> items) {
 		this.items = items;
+	}
+
+	public LocalDate getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(LocalDate orderDate) {
+		this.orderDate = orderDate;
 	}
 	
 }
