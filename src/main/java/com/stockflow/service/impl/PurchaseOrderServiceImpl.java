@@ -2,11 +2,12 @@ package com.stockflow.service.impl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.stockflow.dto.PurchaseOrderItemRequestDTO;
 import com.stockflow.dto.PurchaseOrderRequestDTO;
+import com.stockflow.entity.Product;
 import com.stockflow.entity.PurchaseOrder;
 import com.stockflow.entity.PurchaseOrderItem;
 import com.stockflow.entity.Vendor;
@@ -42,7 +43,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService{
 		
 		order.setVendor(vendor);
 		
-		order.setOrderDatl]''(LocalDate.now());
+		order.setOrderDate(LocalDate.now());
 		
 		order.setStatus("CREATED");
 		
@@ -50,11 +51,31 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService{
 		
 		BigDecimal total = BigDecimal.ZERO;
 		
-		for(CreatePurchaseOrderItemDTO dto : request.getItems()) {
+		for(PurchaseOrderItemRequestDTO dto : request.getItems()) {
 			
+			Product product = productRepository.findById(dto.getProductId()).orElseThrow(() -> new RuntimeException("Product not found"));
 			
+			PurchaseOrderItem item = new PurchaseOrderItem();
+			
+			item.setProduct(product);
+			
+			item.setQuantity(dto.getQuantity());
+			
+			item.setPrice(dto.getPrice());
+			
+			item.setPurchaseOrder(order);
+			
+			BigDecimal itemTotal = dto.getPrice().multiply(BigDecimal.valueOf(dto.getQuantity()));
+			
+			total = total.add(itemTotal);
+			
+			items.add(item);
 			
 		}
+		
+		order.setItems(items);
+		
+		order.setTotalAmount(total);
 		
 		return null;
 	}
