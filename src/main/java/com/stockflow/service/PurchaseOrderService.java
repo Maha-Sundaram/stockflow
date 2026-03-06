@@ -1,10 +1,10 @@
 package com.stockflow.service;
 
 import com.stockflow.dto.PurchaseOrderRequestDTO;
-import com.stockflow.entity.PurchaseOrder;
+import com.stockflow.dto.PurchaseOrderResponseDTO;
 
 public interface PurchaseOrderService {
 
-	PurchaseOrder createPurchaseOrder(PurchaseOrderRequestDTO request);
+	PurchaseOrderResponseDTO createPurchaseOrder(PurchaseOrderRequestDTO request);
 	
 }

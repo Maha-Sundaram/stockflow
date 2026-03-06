@@ -6,20 +6,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stockflow.dto.PurchaseOrderRequestDTO;
-import com.stockflow.entity.PurchaseOrder;
+import com.stockflow.dto.PurchaseOrderResponseDTO;
+import com.stockflow.service.PurchaseOrderService;
 
 @RestController
 @RequestMapping("/purchase-orders")
 public class PurchaseOrderController {
 
-	private PurchaseOrderController purchaseOrderService;
+	private PurchaseOrderService purchaseOrderService;
 	
-	public PurchaseOrderController(PurchaseOrderController purchaseOrderService) {
+	public PurchaseOrderController(PurchaseOrderService purchaseOrderService) {
 		this.purchaseOrderService = purchaseOrderService;
 	}
 	
 	@PostMapping
-	public PurchaseOrder createPurchaseOrder(@RequestBody PurchaseOrderRequestDTO request) {
+	public PurchaseOrderResponseDTO createPurchaseOrder(@RequestBody PurchaseOrderRequestDTO request) {
 		return purchaseOrderService.createPurchaseOrder(request);
 	}
 	

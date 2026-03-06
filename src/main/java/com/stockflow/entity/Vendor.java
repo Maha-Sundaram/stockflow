@@ -2,6 +2,8 @@ package com.stockflow.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
@@ -17,6 +19,7 @@ public class Vendor extends BaseEntity{
 	
 	private String address;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "vendor")
 	private List<Product> products;
 	
