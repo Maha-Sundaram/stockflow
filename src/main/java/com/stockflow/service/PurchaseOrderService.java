@@ -6,5 +6,7 @@ import com.stockflow.dto.PurchaseOrderResponseDTO;
 public interface PurchaseOrderService {
 
 	PurchaseOrderResponseDTO createPurchaseOrder(PurchaseOrderRequestDTO request);
+
+	void receivePurchaseOrder(Long id);
 	
 }
