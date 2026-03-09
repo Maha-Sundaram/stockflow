@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.stockflow.dto.VendorRequestDTO;
 import com.stockflow.dto.VendorResponseDTO;
 import com.stockflow.entity.Vendor;
+import com.stockflow.exception.ResourceNotFoundException;
 import com.stockflow.repository.VendorRepository;
 import com.stockflow.service.VendorService;
 
@@ -40,7 +41,7 @@ public class VendorServiceImpl implements VendorService{
 	@Override
 	public VendorResponseDTO updateVendor(Long id, VendorRequestDTO dto) {
 		
-		Vendor vendor = vendorRepository.findById(id).orElseThrow(() -> new RuntimeException("Vendor not found"));
+		Vendor vendor = vendorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
 		vendor.setName(dto.getName());
 		vendor.setEmail(dto.getEmail());
 		vendor.setPhone(dto.getPhone());

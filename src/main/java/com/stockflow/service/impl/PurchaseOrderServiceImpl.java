@@ -17,6 +17,7 @@ import com.stockflow.entity.Product;
 import com.stockflow.entity.PurchaseOrder;
 import com.stockflow.entity.PurchaseOrderItem;
 import com.stockflow.entity.Vendor;
+import com.stockflow.exception.ResourceNotFoundException;
 import com.stockflow.repository.InventoryRepository;
 import com.stockflow.repository.ProductRepository;
 import com.stockflow.repository.PurchaseOrderRepository;
@@ -50,7 +51,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService{
 	@Override
 	public PurchaseOrderResponseDTO createPurchaseOrder(PurchaseOrderRequestDTO request) {
 
-		Vendor vendor = vendorRepository.findById(request.getVendorId()).orElseThrow(() -> new RuntimeException("Vendor not found"));
+		Vendor vendor = vendorRepository.findById(request.getVendorId()).orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
 
 		PurchaseOrder order = new PurchaseOrder();
 
@@ -68,7 +69,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService{
 
 		for(PurchaseOrderItemRequestDTO dto : request.getItems()) {
 
-			Product product = productRepository.findById(dto.getProductId()).orElseThrow(() -> new RuntimeException("Product not found"));
+			Product product = productRepository.findById(dto.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
 
 			PurchaseOrderItem item = new PurchaseOrderItem();
 
@@ -102,11 +103,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService{
 	@Transactional
 	public void receivePurchaseOrder(Long orderId) {
 
-		PurchaseOrder order = purchaseOrderRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+		PurchaseOrder order = purchaseOrderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
 		if(order.getStatus().equals("RECEIVED")) {
 
-			throw new RuntimeException("Order already received");
+			throw new ResourceNotFoundException("Order already received");
 
 		}
 
@@ -114,7 +115,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService{
 
 			Product product = item.getProduct();
 
-			Inventory inventory = inventoryRepository.findById(product.getId()).orElseThrow(() -> new RuntimeException("Inventory not found"));
+			Inventory inventory = inventoryRepository.findById(product.getId()).orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
 
 			inventory.setQuantity(inventory.getQuantity() + item.getQuantity());
 

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.stockflow.entity.Inventory;
 import com.stockflow.exception.InsufficientStockException;
+import com.stockflow.exception.ResourceNotFoundException;
 import com.stockflow.repository.InventoryRepository;
 import com.stockflow.service.InventoryService;
 
@@ -28,7 +29,7 @@ public class InventoryServiceImpl implements InventoryService{
 			throw new InsufficientStockException("Stock cannot be negative");
 		}
 		
-		Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow(() -> new RuntimeException("Inventory not found"));
+		Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
 		
 		inventory.setQuantity(newQuantity);
 		
@@ -40,7 +41,7 @@ public class InventoryServiceImpl implements InventoryService{
 	@Override
 	public Inventory getIventoryByProduct(Long productId) {
 		
-		return inventoryRepository.findByProductId(productId).orElseThrow(() -> new RuntimeException("Inventory not found"));
+		return inventoryRepository.findByProductId(productId).orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
 	}
 
 	@Override

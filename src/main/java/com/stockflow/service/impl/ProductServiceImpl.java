@@ -9,6 +9,7 @@ import com.stockflow.dto.ProductRequestDTO;
 import com.stockflow.dto.ProductResponseDTO;
 import com.stockflow.entity.Product;
 import com.stockflow.entity.Vendor;
+import com.stockflow.exception.ResourceNotFoundException;
 import com.stockflow.repository.ProductRepository;
 import com.stockflow.repository.VendorRepository;
 import com.stockflow.service.ProductService;
@@ -30,7 +31,7 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public void createProduct(ProductRequestDTO dto) {
 		
-		Vendor vendor = vendorRepository.findById(dto.getVendorId()).orElseThrow(() -> new RuntimeException("Vendor not found"));
+		Vendor vendor = vendorRepository.findById(dto.getVendorId()).orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
 		
 		Product product = new Product();
 		
