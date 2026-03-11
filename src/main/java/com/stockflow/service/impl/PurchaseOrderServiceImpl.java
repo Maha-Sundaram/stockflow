@@ -18,6 +18,7 @@ import com.stockflow.entity.PurchaseOrder;
 import com.stockflow.entity.PurchaseOrderItem;
 import com.stockflow.entity.Vendor;
 import com.stockflow.exception.ResourceNotFoundException;
+import com.stockflow.mapper.PurchaseOrderMapper;
 import com.stockflow.repository.InventoryRepository;
 import com.stockflow.repository.ProductRepository;
 import com.stockflow.repository.PurchaseOrderRepository;
@@ -87,7 +88,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService{
 
 			items.add(item);
 
-			responseItems.add(new PurchaseOrderItemResponseDTO(product.getName(), dto.getPrice(), dto.getQuantity()));
+			responseItems.add(new PurchaseOrderItemResponseDTO(null, null, product.getName(), dto.getPrice(), dto.getQuantity()));
 
 		}
 
@@ -97,11 +98,11 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService{
 
 		PurchaseOrder saveOrder = purchaseOrderRepository.save(order);
 
-		return new PurchaseOrderResponseDTO(saveOrder.getId(), saveOrder.getStatus(), saveOrder.getTotalAmount(), responseItems);
+		return PurchaseOrderMapper.toDTO(saveOrder);
 	}
 
 	@Transactional
-	public void receivePurchaseOrder(Long orderId) {
+	public PurchaseOrderResponseDTO receivePurchaseOrder(Long orderId) {
 
 		PurchaseOrder order = purchaseOrderRepository.findById(orderId).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
 
@@ -125,7 +126,9 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService{
 
 		order.setStatus("RECEIVED");
 
-		purchaseOrderRepository.save(order);
+		PurchaseOrder saved = purchaseOrderRepository.save(order);
+		
+		return PurchaseOrderMapper.toDTO(saved);
 	}
 
 }

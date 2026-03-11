@@ -1,3 +1,4 @@
+
 package com.stockflow.service.impl;
 
 import java.time.LocalDateTime;
@@ -5,9 +6,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.stockflow.dto.InventoryRequestDTO;
+import com.stockflow.dto.InventoryResponseDTO;
 import com.stockflow.entity.Inventory;
 import com.stockflow.exception.InsufficientStockException;
 import com.stockflow.exception.ResourceNotFoundException;
+import com.stockflow.mapper.InventoryMapper;
 import com.stockflow.repository.InventoryRepository;
 import com.stockflow.service.InventoryService;
 
@@ -23,30 +27,34 @@ public class InventoryServiceImpl implements InventoryService{
 	}
 
 	@Override
-	public Inventory updateStock(Long productId, Integer newQuantity) {
+	public InventoryResponseDTO updateStock(InventoryRequestDTO dto) {
 		
-		if(newQuantity < 0) {
+		if(dto.getQuantity() < 0) {
 			throw new InsufficientStockException("Stock cannot be negative");
 		}
 		
-		Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
+		Inventory inventory = inventoryRepository.findByProductId(dto.getProductId()).orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
 		
-		inventory.setQuantity(newQuantity);
+		inventory.setQuantity(inventory.getQuantity());
 		
 		inventory.setUpdatedAt(LocalDateTime.now());
 		
-		return inventoryRepository.save(inventory);
-	}
-
-	@Override
-	public Inventory getIventoryByProduct(Long productId) {
+		Inventory saved = inventoryRepository.save(inventory);
 		
-		return inventoryRepository.findByProductId(productId).orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
+		return InventoryMapper.toDTO(saved);
 	}
 
 	@Override
-	public List<Inventory> getLowStockItems() {
-		return inventoryRepository.findLowStockProducts();
+	public InventoryResponseDTO getInventoryByProduct(Long productId) {
+		
+		Inventory inventory =  inventoryRepository.findByProductId(productId).orElseThrow(() -> new ResourceNotFoundException("Inventory not found"));
+		
+		return InventoryMapper.toDTO(inventory);
+	}
+
+	@Override
+	public List<InventoryResponseDTO> getLowStockItems() {
+		return inventoryRepository.findLowStockProducts().stream().map(InventoryMapper :: toDTO).toList();
 	}
 	
 }

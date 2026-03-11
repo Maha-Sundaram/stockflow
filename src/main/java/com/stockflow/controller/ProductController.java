@@ -35,10 +35,15 @@ public class ProductController {
 	}
 	
 	@GetMapping
-	public Page<ProductResponseDTO> getProduct(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
+	public Page<ProductResponseDTO> getProducts(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size) {
 		
 		return productService.getAllProduct(page, size);
 		
+	}
+	
+	@GetMapping("/{id}")
+	public ProductResponseDTO getProduct(@PathVariable Long id) {
+		return productService.getProductById(id);
 	}
 	
 	@GetMapping("/vendor/{vendorId}")

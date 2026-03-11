@@ -15,6 +15,10 @@ public class ProductResponseDTO {
 	private String vendorName;
 	
 
+	public ProductResponseDTO() {
+		
+	}
+	
 	public ProductResponseDTO(Long id, String name, String category, BigDecimal price, String vendorName) {
 		super();
 		this.id = id;

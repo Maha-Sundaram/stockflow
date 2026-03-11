@@ -7,11 +7,13 @@ import com.stockflow.dto.ProductResponseDTO;
 
 public interface ProductService {
 
-	void createProduct(ProductRequestDTO dto);
+	ProductResponseDTO createProduct(ProductRequestDTO dto);
 	
 	Page<ProductResponseDTO> getAllProduct(int page,int size);
 	
 	
 	Page<ProductResponseDTO> getProductByVendor(Long vendorId, int page, int size);
+
+	ProductResponseDTO getProductById(Long id);
 	
 }

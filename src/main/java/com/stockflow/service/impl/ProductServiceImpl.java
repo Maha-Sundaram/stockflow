@@ -10,6 +10,7 @@ import com.stockflow.dto.ProductResponseDTO;
 import com.stockflow.entity.Product;
 import com.stockflow.entity.Vendor;
 import com.stockflow.exception.ResourceNotFoundException;
+import com.stockflow.mapper.ProductMapper;
 import com.stockflow.repository.ProductRepository;
 import com.stockflow.repository.VendorRepository;
 import com.stockflow.service.ProductService;
@@ -29,21 +30,16 @@ public class ProductServiceImpl implements ProductService{
 	}
 	
 	@Override
-	public void createProduct(ProductRequestDTO dto) {
+	public ProductResponseDTO createProduct(ProductRequestDTO dto) {
 		
 		Vendor vendor = vendorRepository.findById(dto.getVendorId()).orElseThrow(() -> new ResourceNotFoundException("Vendor not found"));
 		
-		Product product = new Product();
+		Product product = ProductMapper.toEntity(dto, vendor);
 		
-		product.setName(dto.getName());
+		Product savedProduct = productRepository.save(product);
 		
-		product.setCategory(dto.getCatogery());
+		return ProductMapper.toDTO(savedProduct);
 		
-		product.setPrice(dto.getPrice());
-		
-		product.setVendor(vendor);
-		
-		productRepository.save(product);
 	}
 
 	@Override
@@ -51,7 +47,7 @@ public class ProductServiceImpl implements ProductService{
 		
 		Pageable pageable = PageRequest.of(page, size);
 		
-		return productRepository.findAll(pageable).map(this:: mapToDTO);
+		return productRepository.findAll(pageable).map(ProductMapper:: toDTO);
 	}
 
 	@Override
@@ -59,17 +55,16 @@ public class ProductServiceImpl implements ProductService{
 		
 		Pageable pageable = PageRequest.of(page, size);
 		
-		return productRepository.findByVendorId(vendorId, pageable).map(this::mapToDTO);
+		return productRepository.findByVendorId(vendorId, pageable).map(ProductMapper:: toDTO);
 		
 	}
-	
-	private ProductResponseDTO mapToDTO(Product product) {
-		return new ProductResponseDTO(product.getId(),
-				product.getName(), 
-				product.getCategory(), 
-				product.getPrice(), 
-				product.getVendor().getName());
+
+	@Override
+	public ProductResponseDTO getProductById(Long id) {
 		
+		Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+		
+		return ProductMapper.toDTO(product);
 	}
 	
 }

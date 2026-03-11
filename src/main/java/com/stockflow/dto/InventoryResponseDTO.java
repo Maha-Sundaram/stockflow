@@ -1,29 +1,29 @@
 package com.stockflow.dto;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
-public class PurchaseOrderItemResponseDTO {
+public class InventoryResponseDTO {
 
 	private final Long id;
 	
-	private Long productId;
-
+	private final Long productId;
+	
 	private final String productName;
+	
+	private final Integer quantity;
+	
+	private final LocalDateTime updatedAt;
+	
 
-	private BigDecimal price;
-
-	private Integer quantity;
-
-	public PurchaseOrderItemResponseDTO(Long id, Long productId, String productName, BigDecimal price,
-			Integer quantity) {
+	public InventoryResponseDTO(Long id, Long productId, String productName, Integer quantity,
+			LocalDateTime updatedAt) {
 		super();
 		this.id = id;
 		this.productId = productId;
 		this.productName = productName;
-		this.price = price;
 		this.quantity = quantity;
+		this.updatedAt = updatedAt;
 	}
-
 
 	public Long getId() {
 		return id;
@@ -37,12 +37,12 @@ public class PurchaseOrderItemResponseDTO {
 		return productName;
 	}
 
-	public BigDecimal getPrice() {
-		return price;
-	}
-
 	public Integer getQuantity() {
 		return quantity;
 	}
 
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+	
 }

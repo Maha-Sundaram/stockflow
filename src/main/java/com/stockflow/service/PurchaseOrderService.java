@@ -7,6 +7,6 @@ public interface PurchaseOrderService {
 
 	PurchaseOrderResponseDTO createPurchaseOrder(PurchaseOrderRequestDTO request);
 
-	void receivePurchaseOrder(Long id);
+	PurchaseOrderResponseDTO receivePurchaseOrder(Long id);
 	
 }

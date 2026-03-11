@@ -2,14 +2,15 @@ package com.stockflow.service;
 
 import java.util.List;
 
-import com.stockflow.entity.Inventory;
+import com.stockflow.dto.InventoryRequestDTO;
+import com.stockflow.dto.InventoryResponseDTO;
 
 public interface InventoryService {
 
-	Inventory updateStock(Long productId, Integer newQuantity);
+	InventoryResponseDTO updateStock(InventoryRequestDTO dto);
 	
-	Inventory getIventoryByProduct(Long productId);
+	InventoryResponseDTO getInventoryByProduct(Long productId);
 	
-	List<Inventory> getLowStockItems();
+	List<InventoryResponseDTO> getLowStockItems();
 	
 }
